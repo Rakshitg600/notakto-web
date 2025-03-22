@@ -84,7 +84,7 @@ const HomePage: React.FC = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1.2, type: "spring", stiffness: 100 }}
       >
-        {/* Left side - Logo (moved from right) */}
+        {/* Left side - Logo */}
         <motion.div 
           className="text-3xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-red-500"
           whileHover={{ scale: 1.05 }}
@@ -93,7 +93,7 @@ const HomePage: React.FC = () => {
           NOTAKTO
         </motion.div>
 
-        {/* Right side - Menu items (moved from left) */}
+        {/* Right side - Menu items */}
         <div className="flex space-x-8">
           <motion.a
             key="Tutorial"
