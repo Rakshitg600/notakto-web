@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Navbar from '../components/Navbar';
 
 // Sound imports would go here in a real implementation
 // import soloHoverSound from '../assets/sounds/solo-hover.wav';
@@ -108,66 +109,126 @@ const HomePage: React.FC = () => {
       </AnimatePresence>
 
       {/* Navbar */}
-      <motion.nav 
-        className="px-6 py-4 flex justify-between items-center border-b border-cyan-900/50"
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1.2, type: "spring", stiffness: 100 }}
-      >
-        {/* Left side - Menu items */}
-        <div className="flex space-x-8">
-          {["Tutorial", "Downloads", "Settings", "Sign In"].map((item, index) => (
-            <motion.a
-              key={item}
-              href={`#${item.toLowerCase().replace(" ", "-")}`}
-              className="relative text-xl hover:text-cyan-400 transition-colors"
-              whileHover={{ scale: 1.05 }}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 + index * 0.1 }}
-            >
-              <span className="relative z-10">{item}</span>
-              <motion.span 
-                className="absolute -left-2 -right-2 h-0.5 bg-red-500 bottom-0"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.2 }}
-              />
-            </motion.a>
-          ))}
-        </div>
-        
-        {/* Right side - Logo */}
-        <motion.div 
-          className="text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-red-500"
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-        >
-          NOTAKTO
-        </motion.div>
-      </motion.nav>
+     <Navbar/>
 
       {/* Main content */}
-      <motion.main 
-        className="container mx-auto px-4 py-16"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
+      {/* Main content with full-screen particles */}
+<motion.main 
+  className="container mx-auto px-4 py-16 relative overflow-hidden" 
+  initial={{ opacity: 0 }} 
+  animate={{ opacity: 1 }} 
+  transition={{ delay: 1.5 }}
+>
+  {/* Pixel particles effect covering the entire main content */}
+  <motion.div className="fixed inset-0 w-full h-full pointer-events-none z-0">
+    {[...Array(50)].map((_, i) => (
+      <motion.div 
+        key={i} 
+        className={`absolute w-2 h-2 bg-cyan-400 rounded-none opacity-70`}
+        initial={{ 
+          x: Math.random() * window.innerWidth, 
+          y: -20 
+        }}
+        animate={{ 
+          y: window.innerHeight + 20,
+          opacity: [0.7, 0.3, 0.7],
+          rotate: [0, 180, 360]
+        }}
+        transition={{ 
+          repeat: Infinity, 
+          duration: 6 + Math.random() * 10, 
+          delay: Math.random() * 5,
+          ease: "linear",
+          times: [0, 0.5, 1]
+        }} 
+      />
+    ))}
+  </motion.div>
+
+  {/* Main title with enhanced effects */}
+  <motion.div 
+    className="text-center mb-16 relative z-10"
+    initial={{ y: 50, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    transition={{ delay: 1.6, duration: 0.5 }}
+  >
+    {/* Background pulse effect */}
+    <motion.div
+      className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-white/10 to-cyan-400/20 rounded-lg"
+      animate={{ 
+        scale: [1, 1.05, 1],
+        opacity: [0.5, 0.8, 0.5]
+      }}
+      transition={{
+        duration: 2,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+    />
+    
+    {/* Glitch effect container */}
+    <div className="relative">
+      <h1 
+        className="font-['VT323'] text-6xl font-bold mb-4 tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-white to-cyan-400 relative z-10"
       >
-        {/* Main title */}
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 1.6, duration: 0.5 }}
-        >
-          <h1 className="text-6xl font-bold mb-4 tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-white to-cyan-400">
-            WELCOME TO NOTAKTO
-          </h1>
-          <p className="text-xl text-cyan-400 tracking-wide">
-            The ultimate tic-tac-toe variant where all marks are X's
-          </p>
-        </motion.div>
+        WELCOME TO NOTAKTO
+      </h1>
+      
+      {/* Shadow layers for 3D effect */}
+      <motion.div 
+        className="absolute top-0 left-0 w-full h-full font-['VT323'] text-6xl font-bold tracking-widest text-red-500/30 z-0"
+        animate={{ x: [0, -3, 0], y: [0, 2, 0] }}
+        transition={{ duration: 3, repeat: Infinity }}
+      >
+        WELCOME TO NOTAKTO
+      </motion.div>
+      
+      {/* Glitch animation */}
+      <motion.div
+        className="absolute top-0 left-0 w-full h-full font-['VT323'] text-6xl font-bold tracking-widest text-cyan-400/40 z-0 overflow-hidden"
+        animate={{
+          clipPath: [
+            "inset(0% 0% 0% 0%)",
+            "inset(40% 0% 40% 0%)",
+            "inset(20% 0% 60% 0%)",
+            "inset(0% 0% 0% 0%)"
+          ],
+          x: [0, 3, -3, 0],
+        }}
+        transition={{
+          duration: 0.5,
+          repeat: Infinity,
+          repeatDelay: 5,
+        }}
+      >
+        WELCOME TO NOTAKTO
+      </motion.div>
+    </div>
+    
+    {/* Subtitle with floating animation */}
+    <motion.p 
+      className="font-['VT323'] text-xl text-cyan-400 tracking-wide relative z-10"
+      animate={{ y: [0, -5, 0] }}
+      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+    >
+      The ultimate tic-tac-toe variant where all marks are X's
+    </motion.p>
+    
+    {/* Pixel-style decorative elements */}
+    <motion.div 
+      className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2"
+      animate={{ opacity: [0.5, 1, 0.5] }}
+      transition={{ duration: 1.5, repeat: Infinity }}
+    >
+      {[...Array(5)].map((_, i) => (
+        <div 
+          key={i} 
+          className="w-3 h-3 bg-gradient-to-br from-red-500 to-cyan-400"
+        />
+      ))}
+    </motion.div>
+  </motion.div>
+
 
         {/* Game mode cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
