@@ -84,7 +84,16 @@ const HomePage: React.FC = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1.2, type: "spring", stiffness: 100 }}
       >
-        {/* Left side - Menu items */}
+        {/* Left side - Logo */}
+        <motion.div 
+          className="text-3xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-red-500"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+        >
+          NOTAKTO
+        </motion.div>
+
+        {/* Right side - Menu items */}
         <div className="flex space-x-8">
           <motion.a
             key="Tutorial"
@@ -191,15 +200,6 @@ const HomePage: React.FC = () => {
             </motion.a>
           ))}
         </div>
-        
-        {/* Right side - Logo */}
-        <motion.div 
-          className="text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-red-500"
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-        >
-          NOTAKTO
-        </motion.div>
       </motion.nav>
 
       {/* Main content */}
