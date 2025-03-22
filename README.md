@@ -1,54 +1,50 @@
-# React + TypeScript + Vite
+# 🎮 NOTAKTO - THE NO-TIE TIC-TAC-TOE 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🔥 Retro Meets Futuristic
+Step into **Notakto**, a mind-bending twist on Tic-Tac-Toe where **ties don’t exist**! With pixel-perfect retro aesthetics, **chiptune soundscapes**, and **modern tech magic**, it’s a game like no other. 
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ⚔️ GAME MODES
+🕹 **Player vs Player** – Battle locally with a friend.  
+🤖 **Play vs AI** – AI-powered opponent with **5 difficulty levels**.  
+🌐 **Live Match** – Face **random players** or challenge **friends via code**.
 
-## Expanding the ESLint configuration
+## 🎨 RETRO VIBES + MODERN TECH
+✨ **Custom Boards & Sizes** – Play your way!  
+🎶 **Chiptune Sound FX** – Pure nostalgia.  
+🧠 **AI-Powered Moves** – Play smarter.  
+🌍 **Web3 & Blockchain** – Play-to-earn with NFT integration.  
+💫 **Futuristic Animations** – Smooth, sleek, and stylish.  
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🏆 PROGRESSION SYSTEM
+Earn **coins & XP** based on **board size, difficulty, and a luck factor**. Use coins to **undo** or **skip moves**! 🎰💰
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+---
+
+## ⚡ GET STARTED
+```bash
+git clone https://github.com/Rakshitg600/Notakto.git
+cd notakto
 ```
+🔗 **[Live Link](https://notakto-team.netlify.app/)**
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🛠 TECH STACK
+### 🎨 Frontend:
+- React Native (CLI), JavaScript, TypeScript, Next.js, Tauri, Tailwind CSS, ShadCN
+### 🔧 Backend:
+- Socket.io, Firebase (OAuth 2), Redis, PostgreSQL, Prisma, Node.js, Cloudflare, Docker, Express, Crypto
+### 🧪 Testing:
+- Jest, Cypress, Detox, Appium, Xcode, Vitest
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+---
+
+## 🔥 JOIN THE COMMUNITY
+Got ideas? Found a bug? Open an issue or fork the repo.  
+📜 **MIT Licensed** – Built for gamers, by gamers.  
+
+🎮 **GitHub Repo:** [Notakto](https://github.com/Rakshitg600/Notakto)  
+🚀 Happy gaming, warriors! 👾✨
+
