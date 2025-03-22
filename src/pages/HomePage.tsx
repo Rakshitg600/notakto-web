@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import customLogo from '../assets/notakto.svg';
 
 // Sound imports would go here in a real implementation
 // import soloHoverSound from '../assets/sounds/solo-hover.wav';
@@ -9,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const HomePage: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
   const [downloadsOpen, setDownloadsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Simulating loading state
   useEffect(() => {
@@ -24,6 +26,35 @@ const HomePage: React.FC = () => {
     // In a real implementation, this would play the corresponding sound
     console.log(`Playing ${gameMode} hover sound`);
   };
+
+  // Close mobile menu on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768 && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [mobileMenuOpen]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (mobileMenuOpen && !target.closest('.mobile-menu') && !target.closest('.menu-button')) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [mobileMenuOpen]);
 
   return (
     <div className="min-h-screen bg-black text-white font-['VT323'] overflow-hidden relative">
@@ -79,22 +110,49 @@ const HomePage: React.FC = () => {
 
       {/* Navbar */}
       <motion.nav 
-        className="px-6 py-4 flex justify-between items-center border-b border-cyan-900/50"
+        className="px-6 py-4 flex justify-between items-center border-b border-cyan-900/50 relative z-50"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1.2, type: "spring", stiffness: 100 }}
       >
         {/* Left side - Logo */}
         <motion.div 
-          className="text-3xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-red-500"
+          className="text-4xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-red-500 flex items-center gap-3"
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
+          {/* Game icon */}
+          <img 
+            src={customLogo} 
+            alt="Notakto Logo" 
+            className="w-10 h-10 md:w-12 md:h-12 filter drop-shadow-glow" 
+            style={{ filter: 'drop-shadow(0 0 4px #00ccff)' }}
+          />
+          
           NOTAKTO
         </motion.div>
 
-        {/* Right side - Menu items */}
-        <div className="flex space-x-8">
+        {/* Hamburger menu button - visible on mobile */}
+        <motion.button
+          className="md:hidden menu-button relative z-50 flex flex-col justify-center items-center w-8 h-8"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          whileTap={{ scale: 0.9 }}
+        >
+          <motion.span
+            className={`w-6 h-0.5 bg-cyan-400 rounded-sm transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}
+            style={{ marginBottom: '5px' }}
+          />
+          <motion.span
+            className={`w-6 h-0.5 bg-cyan-400 rounded-sm transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}
+            style={{ marginBottom: '5px' }}
+          />
+          <motion.span
+            className={`w-6 h-0.5 bg-cyan-400 rounded-sm transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}
+          />
+        </motion.button>
+
+        {/* Desktop menu - hidden on mobile */}
+        <div className="hidden md:flex space-x-8">
           <motion.a
             key="Tutorial"
             href="#tutorial"
@@ -200,6 +258,105 @@ const HomePage: React.FC = () => {
             </motion.a>
           ))}
         </div>
+
+        {/* Mobile menu - fixed full screen overlay */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div 
+              className="fixed inset-0 bg-black/95 flex items-center justify-center mobile-menu z-40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div 
+                className="flex flex-col items-center space-y-8 p-8 border border-cyan-900/50 rounded-lg bg-gray-900/50 backdrop-blur-sm"
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 20 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              >
+                {/* CRT scanlines effect */}
+                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iMSIgaGVpZ2h0PSIyIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIiBwYXR0ZXJuVHJhbnNmb3JtPSJyb3RhdGUoOTAgMC41IDAuNSkiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')] opacity-10 z-0"></div>
+                
+                {/* Menu items */}
+                <motion.a
+                  href="#tutorial"
+                  className="text-2xl hover:text-cyan-400 transition-colors relative"
+                  whileHover={{ x: 5, scale: 1.05 }}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Tutorial
+                  <motion.span 
+                    className="absolute -left-2 -right-2 h-0.5 bg-red-500 bottom-0"
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </motion.a>
+                
+                {/* Mobile Downloads submenu */}
+                <div className="flex flex-col space-y-3 items-center">
+                  <motion.div
+                    className="text-2xl text-cyan-400 font-bold"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Downloads
+                  </motion.div>
+                  
+                  <div className="flex flex-wrap justify-center gap-3">
+                    {["Android", "iOS", "Windows", "Linux", "MacOS"].map((platform, idx) => (
+                      <motion.a
+                        key={platform}
+                        href={`#download-${platform.toLowerCase()}`}
+                        className="px-3 py-1.5 text-lg bg-gray-800/50 hover:bg-cyan-900/50 rounded-md border border-cyan-900/30 hover:border-cyan-500/50 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 + idx * 0.05 }}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {platform}
+                      </motion.a>
+                    ))}
+                  </div>
+                </div>
+                
+                {["Settings", "Sign In"].map((item, idx) => (
+                  <motion.a
+                    key={item}
+                    href={`#${item.toLowerCase().replace(" ", "-")}`}
+                    className="text-2xl hover:text-cyan-400 transition-colors relative"
+                    whileHover={{ x: 5, scale: 1.05 }}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 + idx * 0.1 }}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item}
+                    <motion.span 
+                      className="absolute -left-2 -right-2 h-0.5 bg-red-500 bottom-0"
+                      initial={{ scaleX: 0 }}
+                      whileHover={{ scaleX: 1 }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  </motion.a>
+                ))}
+                
+                {/* Decorative pixels */}
+                <div className="absolute top-2 left-2 w-2 h-2 bg-cyan-500 opacity-70"></div>
+                <div className="absolute top-2 right-2 w-2 h-2 bg-red-500 opacity-70"></div>
+                <div className="absolute bottom-2 left-2 w-2 h-2 bg-red-500 opacity-70"></div>
+                <div className="absolute bottom-2 right-2 w-2 h-2 bg-cyan-500 opacity-70"></div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.nav>
 
       {/* Main content */}
