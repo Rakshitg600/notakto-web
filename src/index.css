@@ -47,8 +47,3 @@ body::before {
   animation: flicker 0.15s infinite alternate;
 }
 
-/* Enhance element focus effects */
-button:focus, a:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--crt-shadow);
-}
