@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const HomePage: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
+  const [downloadsOpen, setDownloadsOpen] = useState(false);
   
   // Simulating loading state
   useEffect(() => {
@@ -85,7 +86,92 @@ const HomePage: React.FC = () => {
       >
         {/* Left side - Menu items */}
         <div className="flex space-x-8">
-          {["Tutorial", "Downloads", "Settings", "Sign In"].map((item, index) => (
+          <motion.a
+            key="Tutorial"
+            href="#tutorial"
+            className="relative text-xl hover:text-cyan-400 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 }}
+          >
+            <span className="relative z-10">Tutorial</span>
+            <motion.span 
+              className="absolute -left-2 -right-2 h-0.5 bg-red-500 bottom-0"
+              initial={{ scaleX: 0 }}
+              whileHover={{ scaleX: 1 }}
+              transition={{ duration: 0.2 }}
+            />
+          </motion.a>
+
+          {/* Downloads with dropdown */}
+          <div 
+            className="relative"
+            onMouseEnter={() => setDownloadsOpen(true)}
+            onMouseLeave={() => setDownloadsOpen(false)}
+          >
+            <motion.div
+              key="Downloads"
+              className="relative text-xl hover:text-cyan-400 transition-colors cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.3 }}
+            >
+              <span className="relative z-10 flex items-center">
+                Downloads
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className={`h-4 w-4 ml-1 transition-transform ${downloadsOpen ? 'rotate-180' : ''}`} 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </span>
+              <motion.span 
+                className="absolute -left-2 -right-2 h-0.5 bg-red-500 bottom-0"
+                initial={{ scaleX: 0 }}
+                whileHover={{ scaleX: 1 }}
+                transition={{ duration: 0.2 }}
+              />
+            </motion.div>
+            
+            {/* Dropdown menu */}
+            <AnimatePresence>
+              {downloadsOpen && (
+                <motion.div 
+                  className="absolute top-full left-0 mt-2 z-50 bg-gray-900 border border-cyan-900/50 rounded-lg overflow-hidden w-36"
+                  initial={{ opacity: 0, y: -10, scaleY: 0.8 }}
+                  animate={{ opacity: 1, y: 0, scaleY: 1 }}
+                  exit={{ opacity: 0, y: -10, scaleY: 0.8 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {["Android", "iOS", "Windows", "Linux", "MacOS"].map((platform, idx) => (
+                    <motion.a
+                      key={platform}
+                      href={`#download-${platform.toLowerCase()}`}
+                      className="block px-4 py-2 text-lg hover:bg-gradient-to-r hover:from-cyan-900/50 hover:to-transparent hover:text-cyan-400 transition-colors"
+                      whileHover={{ x: 5 }}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                    >
+                      {platform}
+                    </motion.a>
+                  ))}
+                  
+                  {/* Pixel decoration */}
+                  <div className="absolute top-2 left-2 w-1 h-1 bg-cyan-500 opacity-70"></div>
+                  <div className="absolute bottom-2 right-2 w-1 h-1 bg-cyan-500 opacity-70"></div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Other menu items */}
+          {["Settings", "Sign In"].map((item, index) => (
             <motion.a
               key={item}
               href={`#${item.toLowerCase().replace(" ", "-")}`}
@@ -93,7 +179,7 @@ const HomePage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 + index * 0.1 }}
+              transition={{ delay: 1.4 + index * 0.1 }}
             >
               <span className="relative z-10">{item}</span>
               <motion.span 
