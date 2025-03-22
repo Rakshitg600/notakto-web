@@ -361,24 +361,119 @@ const HomePage: React.FC = () => {
 
       {/* Main content */}
       <motion.main 
-        className="container mx-auto px-4 py-16"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        className="container mx-auto px-4 py-16 relative overflow-hidden" 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
         transition={{ delay: 1.5 }}
       >
-        {/* Main title */}
+        {/* Pixel particles effect covering the entire main content */}
+        <motion.div className="fixed inset-0 w-full h-full pointer-events-none z-0">
+          {[...Array(50)].map((_, i) => (
+            <motion.div 
+              key={i} 
+              className={`absolute w-2 h-2 bg-cyan-400 rounded-none opacity-70`}
+              initial={{ 
+                x: Math.random() * window.innerWidth, 
+                y: -20 
+              }}
+              animate={{ 
+                y: window.innerHeight + 20,
+                opacity: [0.7, 0.3, 0.7],
+                rotate: [0, 180, 360]
+              }}
+              transition={{ 
+                repeat: Infinity, 
+                duration: 6 + Math.random() * 10, 
+                delay: Math.random() * 5,
+                ease: "linear",
+                times: [0, 0.5, 1]
+              }} 
+            />
+          ))}
+        </motion.div>
+      
+        {/* Main title with enhanced effects */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-16 relative z-10"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1.6, duration: 0.5 }}
         >
-          <h1 className="text-6xl font-bold mb-4 tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-white to-cyan-400">
-            WELCOME TO NOTAKTO
-          </h1>
-          <p className="text-xl text-cyan-400 tracking-wide">
+          {/* Background pulse effect */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-white/10 to-cyan-400/20 rounded-lg"
+            animate={{ 
+              scale: [1, 1.05, 1],
+              opacity: [0.5, 0.8, 0.5]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          
+          {/* Glitch effect container */}
+          <div className="relative">
+            <h1 
+              className="font-['VT323'] text-6xl font-bold mb-4 tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-white to-cyan-400 relative z-10"
+            >
+              WELCOME TO NOTAKTO
+            </h1>
+            
+            {/* Shadow layers for 3D effect */}
+            <motion.div 
+              className="absolute top-0 left-0 w-full h-full font-['VT323'] text-6xl font-bold tracking-widest text-red-500/30 z-0"
+              animate={{ x: [0, -3, 0], y: [0, 2, 0] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              WELCOME TO NOTAKTO
+            </motion.div>
+            
+            {/* Glitch animation */}
+            <motion.div
+              className="absolute top-0 left-0 w-full h-full font-['VT323'] text-6xl font-bold tracking-widest text-cyan-400/40 z-0 overflow-hidden"
+              animate={{
+                clipPath: [
+                  "inset(0% 0% 0% 0%)",
+                  "inset(40% 0% 40% 0%)",
+                  "inset(20% 0% 60% 0%)",
+                  "inset(0% 0% 0% 0%)"
+                ],
+                x: [0, 3, -3, 0],
+              }}
+              transition={{
+                duration: 0.5,
+                repeat: Infinity,
+                repeatDelay: 5,
+              }}
+            >
+              WELCOME TO NOTAKTO
+            </motion.div>
+          </div>
+          
+          {/* Subtitle with floating animation */}
+          <motion.p 
+            className="font-['VT323'] text-xl text-cyan-400 tracking-wide relative z-10"
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          >
             The ultimate tic-tac-toe variant where all marks are X's
-          </p>
+          </motion.p>
+          
+          {/* Pixel-style decorative elements */}
+          <motion.div 
+            className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            {[...Array(5)].map((_, i) => (
+              <div 
+                key={i} 
+                className="w-3 h-3 bg-gradient-to-br from-red-500 to-cyan-400"
+              />
+            ))}
+          </motion.div>
         </motion.div>
 
         {/* Game mode cards */}
@@ -390,7 +485,8 @@ const HomePage: React.FC = () => {
               description: "Challenge the AI in an impossible battle of wits", 
               color: "from-cyan-500 to-cyan-900",
               hoverColor: "from-cyan-400 to-cyan-800",
-              borderColor: "border-cyan-700"
+              borderColor: "border-cyan-700",
+              glowColor: "cyan"
             },
             { 
               title: "DUO MODE", 
@@ -398,7 +494,8 @@ const HomePage: React.FC = () => {
               description: "Play against a friend on the same device", 
               color: "from-red-500 to-red-900",
               hoverColor: "from-red-400 to-red-800",
-              borderColor: "border-red-700"
+              borderColor: "border-red-700",
+              glowColor: "red"
             },
             { 
               title: "LIVE MODE", 
@@ -406,47 +503,64 @@ const HomePage: React.FC = () => {
               description: "Compete online against players worldwide", 
               color: "from-purple-500 to-purple-900",
               hoverColor: "from-purple-400 to-purple-800",
-              borderColor: "border-purple-700"
+              borderColor: "border-purple-700",
+              glowColor: "purple"
             }
           ].map((mode, index) => (
             <motion.div
               key={mode.title}
-              className={`relative p-1 rounded-lg overflow-hidden `}
+              className={`relative p-1 rounded-lg overflow-hidden`}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.8 + index * 0.2 }}
-              whileHover={{ scale: 1.03 }}
+              transition={{ delay: 0.1 + index * 0.2 }}
+              whileHover={{ 
+                scale: 1.05, 
+                transition: { duration: 0.01}
+              }}
             >
-              {/* Neon glow border */}
+              {/* Enhanced Neon glow border with more pronounced effect on hover */}
               <motion.div 
                 className={`absolute inset-0 bg-gradient-to-br ${mode.color} opacity-50 blur-sm`}
-                whileHover={{ opacity: 0.8, scale: 1.1 }}
-                transition={{ duration: 0.3 }}
+                whileHover={{ 
+                  opacity: 0.8, 
+                  scale: 1.1,
+                  filter: "blur(12px)"
+                }}
+                transition={{ duration: 0.01 }}
               />
               
               <motion.div 
                 className={`h-full relative z-10 border-2 ${mode.borderColor} rounded-lg p-6 bg-gray-900/90 flex flex-col items-center cursor-pointer min-h-64`}
-                whileHover="hover"
+                whileHover={{ 
+                  boxShadow: `0 0 20px 5px rgba(${mode.glowColor === 'cyan' ? '0, 255, 255' : mode.glowColor === 'red' ? '255, 0, 0' : '128, 0, 255'}, 0.3)`,
+                  transition: { duration: 0.01 }
+                }}
                 onHoverStart={() => playHoverSound(mode.title.toLowerCase().split(' ')[0])}
               >
                 {/* Pixel art background pattern */}
                 <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPjwvc3ZnPg==')]"></div>
                 
-                {/* Icon */}
+                {/* Icon with enhanced hover effect */}
                 <motion.div 
                   className={`text-4xl mb-6 mt-2 ${mode.title === "SOLO MODE" ? "text-cyan-500" : mode.title === "DUO MODE" ? "text-red-500" : "text-purple-500"}`}
                   variants={{
-                    hover: { scale: 1.2, rotate: 5 }
+                    hover: { 
+                      scale: 1.2, 
+                      rotate: 5, 
+                      textShadow: `0 0 10px rgba(${mode.glowColor === 'cyan' ? '0, 255, 255' : mode.glowColor === 'red' ? '255, 0, 0' : '128, 0, 255'}, 0.8)`
+                    }
                   }}
                 >
                   {mode.icon}
                 </motion.div>
                 
-                {/* Title */}
+                {/* Title with enhanced glow effect */}
                 <motion.h2 
                   className="text-2xl font-bold mb-3 tracking-wider"
                   variants={{
-                    hover: { textShadow: "0 0 8px rgba(0, 255, 255, 0.8)" }
+                    hover: { 
+                      textShadow: `0 0 8px rgba(${mode.glowColor === 'cyan' ? '0, 255, 255' : mode.glowColor === 'red' ? '255, 0, 0' : '128, 0, 255'}, 0.8)` 
+                    }
                   }}
                 >
                   {mode.title}
@@ -457,13 +571,13 @@ const HomePage: React.FC = () => {
                   {mode.description}
                 </p>
                 
-                {/* Play button */}
+                {/* Play button with enhanced hover effect */}
                 <motion.button 
                   className={`mt-auto px-6 py-2 rounded bg-gradient-to-r ${mode.color} text-white font-bold tracking-wider`}
                   variants={{
                     hover: { 
                       scale: 1.05, 
-                      boxShadow: `0 0 15px 0 rgba(0, 255, 255, 0.5)`,
+                      boxShadow: `0 0 15px 0 rgba(${mode.glowColor === 'cyan' ? '0, 255, 255' : mode.glowColor === 'red' ? '255, 0, 0' : '128, 0, 255'}, 0.5)`,
                       backgroundImage: `linear-gradient(to right, ${mode.hoverColor})`
                     }
                   }}
@@ -482,30 +596,30 @@ const HomePage: React.FC = () => {
         </div>
         
         {/* Bottom section */}
-        <motion.div 
-          className="mt-20 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.4 }}
+         <motion.div 
+                  className="mt-20 text-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2.4 }}
+                >
+                  <motion.button
+          className="px-8 py-3 bg-red-600 text-white font-bold text-xl rounded-lg tracking-wider relative overflow-hidden group cursor-pointer hover:cursor-[url('/api/placeholder/32/32'),pointer]"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
-          <motion.button 
-            className="px-8 py-3 bg-red-600 text-white font-bold text-xl rounded-lg tracking-wider relative overflow-hidden group"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          >
-            <span className="relative z-10">START YOUR JOURNEY</span>
-            <motion.div 
-              className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-700"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: 0 }}
-              transition={{ duration: 0.5 }}
-            />
-          </motion.button>
-          
-          <p className="mt-6 text-cyan-600">
-            v1.0.4 | CyberMind Studios © 2025
-          </p>
-        </motion.div>
+          <span className="relative z-10">START YOUR JOURNEY</span>
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-700"
+            initial={{ x: "-100%" }}
+            whileHover={{ x: 0 }}
+            transition={{ duration: 0.5 }}
+          />
+        </motion.button>
+                  
+                  <p className="mt-6 text-cyan-600">
+                    v1.0.4 | CyberMind Studios © 2025
+                  </p>
+                </motion.div>
       </motion.main>
     </div>
   );
