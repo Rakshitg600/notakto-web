@@ -1,0 +1,20 @@
+services:
+  websocket:
+    image: rakshitg600/notakto-socket-server:latest
+    ports:
+      - "8000:8000"
+    restart: always
+    networks:
+      - app-network
+
+  payments:
+    image: rakshitg600/notakto-payment-server:latest
+    ports:
+      - "6000:6000"
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -7,7 +7,7 @@ const GamePage: React.FC = () => {
   const [playerName, setPlayerName] = useState('');
   const [gameStarted, setGameStarted] = useState(false);
   const [gameMode, setGameMode] = useState<'solo' | 'duo'>('solo');
-  const [coins] = useState(100);
+  const [coins] = useState(1000);
   const [xp] = useState(0);
   const [currentTurn, setCurrentTurn] = useState('Player');
   const [gridsAlive] = useState([true, true, true]);

@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@firebase/auth": "^1.9.1",
+    "@firebase/firestore": "^4.7.10",
     "@tailwindcss/vite": "^4.0.15",
+    "dotenv": "^16.4.7",
+    "firebase": "^11.5.0",
     "framer-motion": "^12.5.0",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",

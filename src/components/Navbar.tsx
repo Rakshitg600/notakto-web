@@ -149,25 +149,41 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Other menu items */}
-          {["Settings", "Sign In"].map((item, index) => (
-            <motion.a
-              key={item}
-              href={`#${item.toLowerCase().replace(" ", "-")}`}
-              className="relative text-xl hover:text-cyan-400 transition-colors"
-              whileHover={{ scale: 1.05 }}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.4 + index * 0.1 }}
-            >
-              <span className="relative z-10">{item}</span>
-              <motion.span 
-                className="absolute -left-2 -right-2 h-0.5 bg-red-500 bottom-0"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.2 }}
-              />
-            </motion.a>
-          ))}
+          <motion.button
+            key="Settings"
+            className="relative text-xl hover:text-cyan-400 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4 }}
+            onClick={() => console.log('Settings clicked')}
+          >
+            <span className="relative z-10">Settings</span>
+            <motion.span 
+              className="absolute -left-2 -right-2 h-0.5 bg-red-500 bottom-0"
+              initial={{ scaleX: 0 }}
+              whileHover={{ scaleX: 1 }}
+              transition={{ duration: 0.2 }}
+            />
+          </motion.button>
+
+          <motion.button
+            key="Sign In"
+            className="relative text-xl hover:text-cyan-400 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5 }}
+            onClick={() => console.log('Sign In clicked')}
+          >
+            <span className="relative z-10">Sign In</span>
+            <motion.span 
+              className="absolute -left-2 -right-2 h-0.5 bg-red-500 bottom-0"
+              initial={{ scaleX: 0 }}
+              whileHover={{ scaleX: 1 }}
+              transition={{ duration: 0.2 }}
+            />
+          </motion.button>
         </div>
 
         {/* Mobile menu - fixed full screen overlay */}
