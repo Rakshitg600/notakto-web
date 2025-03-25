@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Navbar from "../components/Navbar";
 
-const socket = io("https://deciduous-incongruous-herring.glitch.me/");
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 
 
 const LivePage = () => {
