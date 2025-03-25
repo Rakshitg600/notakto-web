@@ -58,14 +58,6 @@ const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-black text-white font-['VT323'] overflow-hidden relative">
       {/* CRT overlay effect */}
-      <Link to="/game">
-        <motion.button
-          className="mt-auto px-6 py-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold tracking-wider"
-          whileHover={{ scale: 1.05 }}
-        >
-          PLAY NOW
-        </motion.button>
-      </Link>
       <div className="pointer-events-none fixed inset-0 bg-blue-900/5 z-50 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/10"></div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyIiBoZWlnaHQ9IjIiPjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjIiIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')] opacity-25"></div>
@@ -91,7 +83,7 @@ const HomePage: React.FC = () => {
               NOTAKTO
             </motion.div>
             <motion.div
-              className="w-64 h-2 bg-gray-800 rounded-full overflow-hidden"
+              className="w-64 h-2 bg-gray-800  overflow-hidden"
               initial={{ width: 0 }}
               animate={{ width: "16rem" }}
               transition={{ duration: 0.3 }}
@@ -160,7 +152,7 @@ const HomePage: React.FC = () => {
         >
           {/* Background pulse effect */}
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-white/10 to-cyan-400/20 rounded-lg"
+            className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-white/10 to-cyan-400/20"
             animate={{
               scale: [1, 1.05, 1],
               opacity: [0.5, 0.8, 0.5]
@@ -217,7 +209,7 @@ const HomePage: React.FC = () => {
             animate={{ y: [0, -5, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           >
-            The ultimate tic-tac-toe variant where all marks are X's
+            No Ties, Always a winner
           </motion.p>
 
           {/* Pixel-style decorative elements */}
@@ -268,7 +260,7 @@ const HomePage: React.FC = () => {
           ].map((mode, index) => (
             <motion.div
               key={mode.title}
-              className={`relative p-1 rounded-lg overflow-hidden`}
+              className={`relative p-1 overflow-hidden`}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + index * 0.2 }}
@@ -289,7 +281,7 @@ const HomePage: React.FC = () => {
               />
 
               <motion.div
-                className={`h-full relative z-10 border-2 ${mode.borderColor} rounded-lg p-6 bg-gray-900/90 flex flex-col items-center cursor-pointer min-h-64`}
+                className={`h-full relative z-10 border-2 ${mode.borderColor} p-6 bg-gray-900/90 flex flex-col items-center min-h-64`}
                 whileHover={{
                   boxShadow: `0 0 20px 5px rgba(${mode.glowColor === 'cyan' ? '0, 255, 255' : mode.glowColor === 'red' ? '255, 0, 0' : '128, 0, 255'}, 0.3)`,
                   transition: { duration: 0.01 }
@@ -333,10 +325,10 @@ const HomePage: React.FC = () => {
                 {/* Inside each game mode card */}
                 <Link
                   to={mode.title === "LIVE MODE" ? "/live" : "/game"}
-                  className="mt-auto w-full flex justify-center"
+                  className="mt-auto w-full flex justify-center cursor-pointer"
                 >
                   <motion.button
-                    className="px-6 py-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold tracking-wider w-full mx-4 mb-2"
+                    className="px-6 py-2 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold tracking-wider w-full mx-4 mb-2"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -361,22 +353,9 @@ const HomePage: React.FC = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 2.4 }}
         >
-          <motion.button
-            className="px-8 py-3 bg-red-600 text-white font-bold text-xl rounded-lg tracking-wider relative overflow-hidden group cursor-pointer hover:cursor-[url('/api/placeholder/32/32'),pointer]"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          >
-            <span className="relative z-10">START YOUR JOURNEY</span>
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-700"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: 0 }}
-              transition={{ duration: 0.5 }}
-            />
-          </motion.button>
 
           <p className="mt-6 text-cyan-600">
-            v1.0.4 | CyberMind Studios © 2025
+            Team Notakto © 2025
           </p>
         </motion.div>
       </motion.main>
