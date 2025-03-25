@@ -37,8 +37,7 @@ const Navbar: React.FC = () => {
           <img 
             src={customLogo} 
             alt="Notakto Logo" 
-            className="w-10 h-10 md:w-12 md:h-12 filter drop-shadow-glow" 
-            style={{ filter: 'drop-shadow(0 0 4px #00ccff)' }}
+            className="w-10 h-10 md:w-12 md:h-12 filter drop-shadow-glow custom-logo-shadow" 
           />
           
           NOTAKTO
