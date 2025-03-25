@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
+import { Link } from "react-router-dom";
+
 
 // Sound imports would go here in a real implementation
 // import soloHoverSound from '../assets/sounds/solo-hover.wav';
@@ -10,6 +12,7 @@ import Navbar from '../components/Navbar';
 const HomePage: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // const navigate = useNavigate();
   
   // Simulating loading state
   useEffect(() => {
@@ -323,18 +326,14 @@ const HomePage: React.FC = () => {
                 </p>
                 
                 {/* Play button with enhanced hover effect */}
-                <motion.button 
-                  className={`mt-auto px-6 py-2 rounded bg-gradient-to-r ${mode.color} text-white font-bold tracking-wider`}
-                  variants={{
-                    hover: { 
-                      scale: 1.05, 
-                      boxShadow: `0 0 15px 0 rgba(${mode.glowColor === 'cyan' ? '0, 255, 255' : mode.glowColor === 'red' ? '255, 0, 0' : '128, 0, 255'}, 0.5)`,
-                      backgroundImage: `linear-gradient(to right, ${mode.hoverColor})`
-                    }
-                  }}
-                >
-                  PLAY NOW
-                </motion.button>
+                <Link to="/game">
+  <motion.button
+    className="mt-auto px-6 py-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold tracking-wider"
+    whileHover={{ scale: 1.05 }}
+  >
+    PLAY NOW
+  </motion.button>
+</Link>
                 
                 {/* Small pixels in the corners for decoration */}
                 <div className="absolute top-2 left-2 w-2 h-2 bg-white opacity-70"></div>
