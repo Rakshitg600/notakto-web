@@ -59,13 +59,13 @@ const HomePage: React.FC = () => {
     <div className="min-h-screen bg-black text-white font-['VT323'] overflow-hidden relative">
       {/* CRT overlay effect */}
       <Link to="/game">
-                  <motion.button
-                    className="mt-auto px-6 py-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold tracking-wider"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    PLAY NOW
-                  </motion.button>
-                </Link>
+        <motion.button
+          className="mt-auto px-6 py-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold tracking-wider"
+          whileHover={{ scale: 1.05 }}
+        >
+          PLAY NOW
+        </motion.button>
+      </Link>
       <div className="pointer-events-none fixed inset-0 bg-blue-900/5 z-50 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/10"></div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyIiBoZWlnaHQ9IjIiPjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjIiIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')] opacity-25"></div>
@@ -330,10 +330,15 @@ const HomePage: React.FC = () => {
                   {mode.description}
                 </p>
 
-                <Link to="/game">
+                {/* Inside each game mode card */}
+                <Link
+                  to={mode.title === "LIVE MODE" ? "/live" : "/game"}
+                  className="mt-auto w-full flex justify-center"
+                >
                   <motion.button
-                    className="mt-auto px-6 py-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold tracking-wider"
+                    className="px-6 py-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold tracking-wider w-full mx-4 mb-2"
                     whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     PLAY NOW
                   </motion.button>
