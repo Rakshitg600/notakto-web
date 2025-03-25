@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const socket = io("https://deciduous-incongruous-herring.glitch.me/");
 
@@ -10,6 +11,7 @@ const LivePage = () => {
     const [isMyTurn, setIsMyTurn] = useState(false);
     const [roomId, setRoomId] = useState("");
     const [gameState, setGameState] = useState<"searching" | "playing">("searching");
+    const navigate = useNavigate();
 
     useEffect(() => {
         socket.connect();
@@ -91,10 +93,10 @@ const LivePage = () => {
                     </div>
                 </div>
             )}
-            
+           
             <div className="fixed bottom-0 w-full bg-red-500 py-3 text-center font-['VT323']">
                 <button
-                    onClick={()=>null} // route back to home page
+                    onClick={()=>navigate("/")} // route back to home page
                     className="text-white text-3xl font-['VT323'] hover:opacity-80 transition-opacity"
                 >
                     Leave
