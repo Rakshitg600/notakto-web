@@ -5,7 +5,7 @@ const [, setIsProcessingPayment] = useState<boolean>(false);
 export const handleBuyCoins = async () => {
     setIsProcessingPayment(true);
     try {
-      const response = await fetch(`${import.meta.env.PAY_URL}//create-payment`, {
+      const response = await fetch(`${import.meta.env.VITE_PAY_URL}//create-payment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -36,7 +36,6 @@ export const handleBuyCoins = async () => {
 
       if (data.status === "paid") {
         console.log("Success", "100 coins added to your account!");
-        props.onAddCoins?.(100);
       } else {
         setTimeout(() => checkPaymentStatus(orderId), 5000);
       }
