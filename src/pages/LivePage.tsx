@@ -3,7 +3,8 @@ import { io } from "socket.io-client";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 
-const socket = io(import.meta.env.VITE_SOCKET_SERVER);
+const socket = io("https://deciduous-incongruous-herring.glitch.me/");
+console.log(import.meta.env.VITE_SOCKET_SERVER);
 
 const LivePage = () => {
     const [boards, setBoards] = useState(Array(3).fill('').map(() => ({ grid: Array(9).fill(""), blocked: false })));
