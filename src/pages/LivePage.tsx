@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import Navbar from "../components/Navbar";
 
 const socket = io("https://deciduous-incongruous-herring.glitch.me/");
 
@@ -51,6 +52,7 @@ const LivePage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black p-4 relative">
+            <Navbar/>
             {gameState === "playing" ? (
                 <>
                     <div className="text-red-500 text-4xl mb-4 font-['VT323']">
