@@ -10,7 +10,7 @@ const GamePageSolo: React.FC = () => {
   const [currentTurn, setCurrentTurn] = useState('Player');
   const [gridsAlive] = useState([true, true, true]);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [sound, setSound] = useState(true);
+  const [setSound] = useState(true);
 
   // Solo settings state
   const [soloSettings, setSoloSettings] = useState({
@@ -29,16 +29,16 @@ const GamePageSolo: React.FC = () => {
     }
   };
 
-  const toggleSettings = () => {
-    setIsSettingsOpen(!isSettingsOpen);
-  };
+  // const toggleSettings = () => {
+  //   setIsSettingsOpen(!isSettingsOpen);
+  // };
 
   const handleResetGame = () => {
     setIsSettingsOpen(false);
     // Add reset game logic
   };
 
-  const toggleSound = () => setSound((prev) => !prev);
+  // const toggleSound = () => setSound((prev) => !prev);
 
   const handleSoloSettingsChange = (newSettings: { aiLevel: number; soundOn: boolean }) => {
     setSoloSettings(newSettings);
