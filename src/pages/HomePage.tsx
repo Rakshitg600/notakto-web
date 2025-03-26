@@ -107,7 +107,7 @@ const HomePage: React.FC = () => {
       </AnimatePresence>
 
       {/* Navbar */}
-      <Navbar />
+      <Navbar onSettingsClick={() => console.log('Settings clicked')} />
 
       {/* Main content */}
       <motion.main
