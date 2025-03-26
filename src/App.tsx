@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import HomePage from "./pages/HomePage";
-import GamePage from "./pages/GamePage";
+import GamePageDuo from "./pages/GamePageDuo";
+import GamePageSolo from "./pages/GamePageSolo";
 import LiveMode from "./pages/LivePage";
 import './index.css';
 
@@ -11,7 +12,8 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/game" element={<GamePage />} />
+          <Route path="/solo" element={<GamePageSolo />} />
+          <Route path="/duo" element={<GamePageDuo />} />
           <Route path="/live" element={<LiveMode />} />
         </Routes>
       </div>

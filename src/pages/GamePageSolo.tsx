@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import GameGrid from '../components/GameGrid';
-import SettingsModal from '../components/SettingsModal';
-import SettingsSolo from '../components/SettingsSolo'; // Import the new component
+import SettingsSolo from '../components/SettingsSolo';
 
-const GamePage: React.FC = () => {
+// Remove the unused interface or use it in the component props
+interface GamePageSoloProps {
+  // Add any props if needed, or remove if no props are required
+}
+
+const GamePageSolo: React.FC<GamePageSoloProps> = () => {
   const [playerName, setPlayerName] = useState('');
   const [gameStarted, setGameStarted] = useState(false);
-  const [gameMode, setGameMode] = useState<'solo' | 'duo'>('solo');
-  const [coins] = useState(1000);
-  const [xp] = useState(0);
   const [currentTurn, setCurrentTurn] = useState('Player');
   const [gridsAlive] = useState([true, true, true]);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [sound, setSound] = useState(true);
-  const [soundEnabled] = useState(true);
 
-  // New state for solo settings
+  // Solo settings state
   const [soloSettings, setSoloSettings] = useState({
     aiLevel: 1,
     soundOn: true,
@@ -35,19 +34,35 @@ const GamePage: React.FC = () => {
   };
 
   const toggleSettings = () => {
-    setIsSettingsOpen(!isSettingsOpen);
+    setIsSettingsOpen((prev) => !prev);
   };
 
   const handleResetGame = () => {
     setIsSettingsOpen(false);
+    // Add reset game logic
   };
 
-  const toggleSound = () => setSound((prev) => !prev);
+  // const toggleSound = () => {
+  //   setSoloSettings(prev => ({
+  //     ...prev,
+  //     soundOn: !prev.soundOn
+  //   }));
+  // };
 
-  // New handler for solo settings
   const handleSoloSettingsChange = (newSettings: { aiLevel: number; soundOn: boolean }) => {
     setSoloSettings(newSettings);
-    setSound(newSettings.soundOn);
+  };
+
+  const handleUndo = () => {
+    console.log('Undo move');
+  };
+
+  const handleSkipMove = () => {
+    console.log('Skip move');
+  };
+
+  const handleMainMenu = () => {
+    setGameStarted(false);
   };
 
   return (
@@ -91,75 +106,30 @@ const GamePage: React.FC = () => {
         <>
           <Navbar onSettingsClick={toggleSettings} />
 
-          {/* Existing Settings Modal for Duo Mode */}
-          <SettingsModal
-            isOpen={isSettingsOpen && gameMode === 'duo'}
-            onClose={toggleSettings}
-            onResetGame={handleResetGame}
-            soundEnabled={soundEnabled}
-            toggleSound={toggleSound}
-            gameMode={gameMode}
-            onGameModeChange={(mode) => setGameMode(mode)}
-            sound={sound}
-            onSoundToggle={toggleSound}
-          />
-
-          {/* New Solo Settings Modal */}
-          {gameMode === 'solo' && (
-            <SettingsSolo
+          <SettingsSolo
             isOpen={isSettingsOpen}
             onClose={toggleSettings}
             initialSettings={soloSettings}
             onSettingsChange={handleSoloSettingsChange}
-            coins={coins}
-            onUndo={() => {/* Implement undo logic */}}
-            onSkipMove={() => {/* Implement skip move logic */}}
-            onBuyCoins={() => {/* Implement buy coins logic */}}
-            onReset={() => {/* Implement game reset logic */}}
-            onMainMenu={() => {/* Navigate to main menu */}}
+            onUndo={handleUndo}
+            onSkipMove={handleSkipMove}
+            onMainMenu={handleMainMenu}
+            onReset={handleResetGame}
           />
-          
-          )}
 
           <motion.main
             className="container mx-auto px-4 py-16 pt-24 relative"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            {/* Game Stats */}
-            <div className="flex justify-between mb-8 text-xl">
-              <div>
-                <span className="text-yellow-500">💰 {coins}</span>
-                <span className="ml-4 text-cyan-500">⚡ {xp} XP</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span>Mode:</span>
-                <label htmlFor="gameMode" className="sr-only">
-                  Select Game Mode
-                </label>
-                <select
-                  id="gameMode"
-                  value={gameMode}
-                  onChange={(e) => setGameMode(e.target.value as 'solo' | 'duo')}
-                  className="bg-gray-800 text-white px-2 py-1 rounded"
-                >
-                  <option value="solo">Solo</option>
-                  <option value="duo">Duo</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Turn Indicator */}
             <motion.div
               className="text-center text-2xl mb-8"
               key={currentTurn}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              {currentTurn}'s Turn | $7.7's Game
+              {currentTurn}'s Turn
             </motion.div>
-
-            {/* Game Grids */}
             <div className="grid grid-cols-3 gap-4">
               {gridsAlive.map((isAlive, index) => (
                 <GameGrid
@@ -177,4 +147,4 @@ const GamePage: React.FC = () => {
   );
 };
 
-export default GamePage;
+export default GamePageSolo;
