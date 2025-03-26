@@ -1,8 +1,20 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; // Added motion back to resolve TS6133 error
 import Navbar from '../components/Navbar';
 import GameGrid from '../components/GameGrid';
 import SettingsModal from '../components/SettingsModal';
+
+// Define interfaces for components if not already defined
+interface SettingsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onResetGame?: () => void;
+  soundEnabled: boolean;
+  onSoundToggle: () => void;
+  toggleSound?: () => void;
+  gameMode?: string;
+  onGameModeChange?: (mode: string) => void;
+}
 
 const GamePageDuo: React.FC = () => {
   const [player1Name, setPlayer1Name] = useState('');
@@ -41,10 +53,8 @@ const GamePageDuo: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <Navbar 
-        onSettingsClick={toggleSettings} 
-        onResetGame={handleResetGame} 
-        soundEnabled={sound}
-        onSoundToggle={toggleSound}
+        onSettingsClick={toggleSettings}
+        // Remove onResetGame as it's not part of NavbarProps
       />
 
       {!gameStarted && (
@@ -69,8 +79,8 @@ const GamePageDuo: React.FC = () => {
               maxLength={15}
               required
             />
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               START GAME
@@ -81,20 +91,18 @@ const GamePageDuo: React.FC = () => {
 
       {gameStarted && (
         <div className="container mx-auto px-4 py-8">
-          {/* Turn Indicator */}
           <div className="text-center text-xl mb-6">
             {currentTurn}'s Turn
           </div>
 
-          {/* Game Grids */}
           <div className="grid grid-cols-3 gap-4">
             {gridsAlive.map((isAlive, index) => (
               isAlive && (
-                <GameGrid 
-                  key={index} 
+                <GameGrid
+                  key={index}
                   gridIndex={index}
                   onCellClick={handleGridCellClick}
-                  disabled={false} 
+                  disabled={false}
                 />
               )
             ))}
@@ -104,12 +112,15 @@ const GamePageDuo: React.FC = () => {
 
       <AnimatePresence>
         {isSettingsOpen && (
-          <SettingsModal 
+          <SettingsModal
             isOpen={isSettingsOpen}
             onClose={toggleSettings}
             onResetGame={handleResetGame}
             soundEnabled={sound}
             onSoundToggle={toggleSound}
+            toggleSound={toggleSound} // Add this to match SettingsModalProps
+            gameMode="duo" // Add gameMode
+            onGameModeChange={() => {}} // Add a placeholder function if needed
           />
         )}
       </AnimatePresence>

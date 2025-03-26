@@ -1,8 +1,23 @@
 import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; // Added motion import
 import Navbar from '../components/Navbar';
 import GameGrid from '../components/GameGrid';
 import SettingsSolo from '../components/SettingsSolo';
+
+// Define interface for SettingsSoloProps if not already defined
+interface SettingsSoloProps {
+  isOpen: boolean;
+  onClose: () => void;
+  initialSettings: {
+    aiLevel: number;
+    soundOn: boolean;
+  };
+  onSettingsChange: (newSettings: { aiLevel: number; soundOn: boolean }) => void;
+  onUndo?: () => void;
+  onSkipMove?: () => void;
+  onMainMenu?: () => void;
+  onReset?: () => void;
+}
 
 const GamePageSolo: React.FC = () => {
   const [playerName, setPlayerName] = useState('');
@@ -61,8 +76,16 @@ const GamePageSolo: React.FC = () => {
     <div className="min-h-screen bg-black text-white font-['VT323'] overflow-hidden relative">
       <AnimatePresence>
         {!gameStarted && (
-          <motion.div className="fixed inset-0 bg-black z-50 flex items-center justify-center" initial={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div className="bg-gray-900 p-8 rounded-lg text-center" initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
+          <motion.div
+            className="fixed inset-0 bg-black z-50 flex items-center justify-center"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-gray-900 p-8 rounded-lg text-center"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+            >
               <h2 className="text-3xl mb-6 text-cyan-400">ENTER YOUR NAME</h2>
               <form onSubmit={handleNameSubmit} className="flex flex-col items-center">
                 <input
@@ -73,7 +96,11 @@ const GamePageSolo: React.FC = () => {
                   placeholder="Cyber Warrior"
                   maxLength={15}
                 />
-                <motion.button type="submit" className="bg-red-600 text-white px-6 py-2 rounded" whileHover={{ scale: 1.05 }}>
+                <motion.button
+                  type="submit"
+                  className="bg-red-600 text-white px-6 py-2 rounded"
+                  whileHover={{ scale: 1.05 }}
+                >
                   START GAME
                 </motion.button>
               </form>
@@ -95,17 +122,29 @@ const GamePageSolo: React.FC = () => {
             onSkipMove={handleSkipMove}
             onMainMenu={handleMainMenu}
             onReset={handleResetGame}
-            soundEnabled={soundEnabled}
-            onSoundToggle={toggleSound}
           />
 
-          <motion.main className="container mx-auto px-4 py-16 pt-24 relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <motion.div className="text-center text-2xl mb-8" key={currentTurn} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.main
+            className="container mx-auto px-4 py-16 pt-24 relative"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <motion.div
+              className="text-center text-2xl mb-8"
+              key={currentTurn}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
               {currentTurn}'s Turn
             </motion.div>
             <div className="grid grid-cols-3 gap-4">
               {gridsAlive.map((isAlive, index) => (
-                <GameGrid key={index} gridIndex={index} onCellClick={handleGridCellClick} disabled={!isAlive || currentTurn === 'Computer'} />
+                <GameGrid
+                  key={index}
+                  gridIndex={index}
+                  onCellClick={handleGridCellClick}
+                  disabled={!isAlive || currentTurn === 'Computer'}
+                />
               ))}
             </div>
           </motion.main>
