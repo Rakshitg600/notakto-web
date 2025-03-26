@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import customLogo from '../assets/notakto.svg';
+import { signInWithGoogle, signOutUser } from '../constants/firebase';
 
 interface NavbarProps {
   onSettingsClick: () => void;  // Updated to be a required prop
@@ -9,6 +10,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onSettingsClick }) => {
   const [downloadsOpen, setDownloadsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [signed,setSigned]=useState<boolean>(false);
 
   // Close mobile menu on window resize
   useEffect(() => {
@@ -171,23 +173,49 @@ const Navbar: React.FC<NavbarProps> = ({ onSettingsClick }) => {
             />
           </motion.button>
 
-          <motion.button
-            key="Sign In"
-            className="relative text-xl hover:text-cyan-400 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5 }}
-            onClick={() => console.log('Sign In clicked')}
-          >
-            <span className="relative z-10">Sign In</span>
-            <motion.span 
-              className="absolute -left-2 -right-2 h-0.5 bg-red-500 bottom-0"
-              initial={{ scaleX: 0 }}
-              whileHover={{ scaleX: 1 }}
-              transition={{ duration: 0.2 }}
-            />
-          </motion.button>
+          {signed ? (
+            <motion.button
+              key="Sign Out"
+              className="relative text-xl hover:text-cyan-400 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.5 }}
+              onClick={() => {
+                signOutUser();
+                setSigned(false);
+              }}
+            >
+              <span className="relative z-10">Sign Out</span>
+              <motion.span 
+                className="absolute -left-2 -right-2 h-0.5 bg-red-500 bottom-0"
+                initial={{ scaleX: 0 }}
+                whileHover={{ scaleX: 1 }}
+                transition={{ duration: 0.2 }}
+              />
+            </motion.button>
+          ) : (
+            <motion.button
+              key="Sign In"
+              className="relative text-xl hover:text-cyan-400 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.5 }}
+              onClick={() => {
+                signInWithGoogle();
+                setSigned(true);
+              }}
+            >
+              <span className="relative z-10">Sign In</span>
+              <motion.span 
+                className="absolute -left-2 -right-2 h-0.5 bg-red-500 bottom-0"
+                initial={{ scaleX: 0 }}
+                whileHover={{ scaleX: 1 }}
+                transition={{ duration: 0.2 }}
+              />
+            </motion.button>
+          )}
         </div>
 
         {/* Mobile menu - similar modifications for mobile version */}
