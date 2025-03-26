@@ -3,6 +3,7 @@ import "./App.css";
 import HomePage from "./pages/HomePage";
 import GamePage from "./pages/GamePage";
 import LiveMode from "./pages/LivePage";
+import './index.css';
 
 function App() {
   return (
