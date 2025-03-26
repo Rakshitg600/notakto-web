@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import GameGrid from '../components/GameGrid';
 import SettingsSolo from '../components/SettingsSolo';
+import { 
+  onAuthStateChangedListener, 
+  saveEconomyToFirestore, 
+  loadEconomyFromFirestore,
+} from '../constants/firebase';
 
 const GamePageSolo: React.FC = () => {
   const [playerName, setPlayerName] = useState('');
@@ -10,6 +15,7 @@ const GamePageSolo: React.FC = () => {
   const [currentTurn, setCurrentTurn] = useState('Player');
   const [gridsAlive] = useState([true, true, true]);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
 
   // Add state for coins and XP
   const [coins, setCoins] = useState(1000);
@@ -20,14 +26,28 @@ const GamePageSolo: React.FC = () => {
     aiLevel: 1,
     soundOn: true,
   });
-
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener(async (user:any) => {
+      if (user) {
+        setUserId(user.uid);
+        const data = await loadEconomyFromFirestore(user.uid);
+        setCoins(data.coins);
+        setXp(data.experience);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    if (userId && gameStarted) {
+      const saveData = setTimeout(() => {
+        saveEconomyToFirestore(userId, coins, xp);
+      }, 500);
+      return () => clearTimeout(saveData);
+    }
+  }, [coins, xp, userId, gameStarted]);
   const handleGridCellClick = () => {
     setCurrentTurn(currentTurn === 'Player' ? 'Computer' : 'Player');
     
-    // Example of using setCoins and setXp
-    // You can replace these with actual game logic
-    setCoins(prevCoins => prevCoins + 10);
-    setXp(prevXp => prevXp + 5);
   };
 
   const handleNameSubmit = (e: React.FormEvent) => {
@@ -43,9 +63,7 @@ const GamePageSolo: React.FC = () => {
 
   const handleResetGame = () => {
     setIsSettingsOpen(false);
-    // Reset coins and XP
-    setCoins(1000);
-    setXp(0);
+    
   };
 
   const handleSoloSettingsChange = (newSettings: { aiLevel: number; soundOn: boolean }) => {
@@ -105,25 +123,7 @@ const GamePageSolo: React.FC = () => {
         <>
           <Navbar onSettingsClick={toggleSettings} />
 
-          {/* Top bar with coins and XP */}
-          <div className="absolute top-0 left-0 right-0 flex justify-between p-4 text-xl">
-            <div className="flex items-center">
-              <img 
-                src="/coin-icon.png" 
-                alt="Coins" 
-                className="w-6 h-6 mr-2" 
-              />
-              <span>{coins}</span>
-            </div>
-            <div className="flex items-center">
-              <img 
-                src="/xp-icon.png" 
-                alt="XP" 
-                className="w-6 h-6 mr-2" 
-              />
-              <span>{xp} XP</span>
-            </div>
-          </div>
+          
 
           <SettingsSolo
             isOpen={isSettingsOpen}
@@ -149,6 +149,23 @@ const GamePageSolo: React.FC = () => {
             >
               {currentTurn}'s Turn
             </motion.div>
+            {/* Top bar with coins and XP */}
+          <div className="absolute top-0 left-0 right-0 flex justify-between p-4 text-xl">
+            <div className="flex items-center">
+              <img 
+                src="/coin-icon.png" 
+                className="w-6 h-6 mr-2" 
+              />
+              <span>:  {coins}</span>
+            </div>
+            <div className="flex items-center">
+              <img 
+                src="/xp-icon.png" 
+                className="w-6 h-6 mr-2" 
+              />
+              <span>{xp} XP</span>
+            </div>
+          </div>
             <div className="grid grid-cols-3 gap-4">
               {gridsAlive.map((isAlive, index) => (
                 <GameGrid

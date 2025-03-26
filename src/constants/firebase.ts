@@ -46,15 +46,15 @@ export const onAuthStateChangedListener = (callback: any) => {
   return onAuthStateChanged(auth, callback);
 };
 
-export const saveEconomyToFirestore = async (userId: string, coins: any, XP: any) => {
+export const saveEconomyToFirestore = async (userId: string, coins: any, experience: any) => {
   const userRef = doc(firestore, 'users', userId);
-  await setDoc(userRef, { coins, XP }, { merge: true });
+  await setDoc(userRef, { coins, experience }, { merge: true });
 };
 
 export const loadEconomyFromFirestore = async (userId: string) => {
   const userRef = doc(firestore, 'users', userId);
   const docSnap = await getDoc(userRef);
-  return docSnap.exists() ? docSnap.data() : null;
+  return docSnap.exists() ? docSnap.data() : { coins: 1000, experience: 0 };
 };
 export const calculateRewards = (
   isWin: boolean,
