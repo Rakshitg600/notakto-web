@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import GameGrid from '../components/GameGrid';
 import SettingsModal from '../components/SettingsModal';
-import chiptune from '../assets/button-sound.mp3';
 
 const GamePage: React.FC = () => {
   const [playerName, setPlayerName] = useState('');
