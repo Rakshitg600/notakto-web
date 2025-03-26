@@ -23,6 +23,11 @@ const GamePageSolo: React.FC = () => {
 
   const handleGridCellClick = () => {
     setCurrentTurn(currentTurn === 'Player' ? 'Computer' : 'Player');
+    
+    // Example of using setCoins and setXp
+    // You can replace these with actual game logic
+    setCoins(prevCoins => prevCoins + 10);
+    setXp(prevXp => prevXp + 5);
   };
 
   const handleNameSubmit = (e: React.FormEvent) => {
@@ -38,7 +43,9 @@ const GamePageSolo: React.FC = () => {
 
   const handleResetGame = () => {
     setIsSettingsOpen(false);
-    // Add reset game logic
+    // Reset coins and XP
+    setCoins(1000);
+    setXp(0);
   };
 
   const handleSoloSettingsChange = (newSettings: { aiLevel: number; soundOn: boolean }) => {
