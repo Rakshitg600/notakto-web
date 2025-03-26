@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 
 interface GameGridProps {
   gridIndex: number;
@@ -20,24 +20,26 @@ const GameGrid: React.FC<GameGridProps> = ({ gridIndex, onCellClick, disabled = 
   };
 
   return (
-    <motion.div 
-      className="grid grid-cols-3 gap-1 bg-gray-800 p-1 rounded-lg"
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-    >
+    <div className="grid grid-cols-3 gap-[2px] bg-transparent">
       {grid.map((cell, index) => (
-        <motion.div
+        <button
           key={index}
-          className={`aspect-square bg-black border border-gray-700 flex items-center justify-center text-4xl cursor-pointer 
-            ${cell ? 'text-red-500' : 'text-gray-500 hover:bg-gray-900'}
-            ${disabled ? 'cursor-not-allowed' : ''}`}
           onClick={() => handleCellClick(index)}
-          whileHover={{ scale: !disabled && !cell ? 1.05 : 1 }}
+          disabled={!!cell || disabled}
+          className={`
+            w-full aspect-square 
+            border border-gray-700 
+            bg-black 
+            flex items-center justify-center 
+            text-4xl font-bold
+            ${cell ? 'text-blue-500' : 'text-gray-500'}
+            ${disabled || cell ? 'cursor-not-allowed' : 'hover:bg-gray-900'}
+          `}
         >
           {cell}
-        </motion.div>
+        </button>
       ))}
-    </motion.div>
+    </div>
   );
 };
 
