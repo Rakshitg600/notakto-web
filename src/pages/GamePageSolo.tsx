@@ -1,31 +1,20 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; // Added motion import
+import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import GameGrid from '../components/GameGrid';
 import SettingsSolo from '../components/SettingsSolo';
 
-// Define interface for SettingsSoloProps if not already defined
-interface SettingsSoloProps {
-  isOpen: boolean;
-  onClose: () => void;
-  initialSettings: {
-    aiLevel: number;
-    soundOn: boolean;
-  };
-  onSettingsChange: (newSettings: { aiLevel: number; soundOn: boolean }) => void;
-  onUndo?: () => void;
-  onSkipMove?: () => void;
-  onMainMenu?: () => void;
-  onReset?: () => void;
+// Remove the unused interface or use it in the component props
+interface GamePageSoloProps {
+  // Add any props if needed, or remove if no props are required
 }
 
-const GamePageSolo: React.FC = () => {
+const GamePageSolo: React.FC<GamePageSoloProps> = () => {
   const [playerName, setPlayerName] = useState('');
   const [gameStarted, setGameStarted] = useState(false);
   const [currentTurn, setCurrentTurn] = useState('Player');
   const [gridsAlive] = useState([true, true, true]);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [soundEnabled, setSound] = useState(true);
 
   // Solo settings state
   const [soloSettings, setSoloSettings] = useState({
@@ -53,11 +42,15 @@ const GamePageSolo: React.FC = () => {
     // Add reset game logic
   };
 
-  const toggleSound = () => setSound((prev) => !prev);
+  const toggleSound = () => {
+    setSoloSettings(prev => ({
+      ...prev,
+      soundOn: !prev.soundOn
+    }));
+  };
 
   const handleSoloSettingsChange = (newSettings: { aiLevel: number; soundOn: boolean }) => {
     setSoloSettings(newSettings);
-    setSound(newSettings.soundOn);
   };
 
   const handleUndo = () => {

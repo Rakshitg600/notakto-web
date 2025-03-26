@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; // Added motion back to resolve TS6133 error
+import { AnimatePresence } from 'framer-motion'; // Remove motion import if not used
 import Navbar from '../components/Navbar';
 import GameGrid from '../components/GameGrid';
 import SettingsModal from '../components/SettingsModal';
 
-// Define interfaces for components if not already defined
-interface SettingsModalProps {
+// Remove or use the interface, or export it if needed
+export interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
   onResetGame?: () => void;
@@ -14,6 +14,7 @@ interface SettingsModalProps {
   toggleSound?: () => void;
   gameMode?: string;
   onGameModeChange?: (mode: string) => void;
+  sound?: boolean; // Add this to match the required prop
 }
 
 const GamePageDuo: React.FC = () => {
@@ -54,7 +55,6 @@ const GamePageDuo: React.FC = () => {
     <div className="min-h-screen bg-gray-900 text-white">
       <Navbar 
         onSettingsClick={toggleSettings}
-        // Remove onResetGame as it's not part of NavbarProps
       />
 
       {!gameStarted && (
@@ -118,9 +118,10 @@ const GamePageDuo: React.FC = () => {
             onResetGame={handleResetGame}
             soundEnabled={sound}
             onSoundToggle={toggleSound}
-            toggleSound={toggleSound} // Add this to match SettingsModalProps
-            gameMode="duo" // Add gameMode
-            onGameModeChange={() => {}} // Add a placeholder function if needed
+            toggleSound={toggleSound}
+            gameMode="duo"
+            onGameModeChange={() => {}}
+            sound={sound} // Add this to match the interface
           />
         )}
       </AnimatePresence>
