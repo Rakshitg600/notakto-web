@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import GameGrid from '../components/GameGrid';
+import SettingsModal from '../components/SettingsModal';
 
 const GamePage: React.FC = () => {
   const [playerName, setPlayerName] = useState('');
@@ -11,6 +12,10 @@ const GamePage: React.FC = () => {
   const [xp] = useState(0);
   const [currentTurn, setCurrentTurn] = useState('Player');
   const [gridsAlive] = useState([true, true, true]);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [sound, setSound] = useState(true);
+  const [soundEnabled] = useState(true);
+
 
   const handleGridCellClick = () => {
     // Basic turn switching and grid management logic
@@ -24,6 +29,17 @@ const GamePage: React.FC = () => {
       setGameStarted(true);
     }
   };
+
+  const toggleSettings = () => {
+    setIsSettingsOpen(!isSettingsOpen);
+  };
+
+  const handleResetGame = () => {
+    // Implement game reset logic
+    setIsSettingsOpen(false);
+  };
+
+  const toggleSound = () => setSound((prev) => !prev);
 
   return (
     <div className="min-h-screen bg-black text-white font-['VT323'] overflow-hidden relative">
@@ -64,7 +80,19 @@ const GamePage: React.FC = () => {
 
       {gameStarted && (
         <>
-          <Navbar />
+         <Navbar onSettingsClick={toggleSettings} />
+
+         <SettingsModal 
+            isOpen={isSettingsOpen}
+            onClose={toggleSettings}
+            onResetGame={handleResetGame}
+            soundEnabled={soundEnabled}
+            toggleSound={toggleSound}
+            gameMode={gameMode}
+            onGameModeChange={(mode) => setGameMode(mode)}
+            sound={sound}
+            onSoundToggle={toggleSound}
+          />
           
           <motion.main 
             className="container mx-auto px-4 py-16 pt-24 relative"
