@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
+import SettingsLive from "../components/SettingsLive";
 
 const socket = io("https://deciduous-incongruous-herring.glitch.me/");
 console.log(import.meta.env.VITE_SOCKET_SERVER);
@@ -12,6 +13,12 @@ const LivePage = () => {
     const [roomId, setRoomId] = useState("");
     const [gameState, setGameState] = useState<"searching" | "playing">("searching");
     const navigate = useNavigate();
+    const [settingsOpen, setSettingsOpen] = useState(false);
+    const [gameSettings, setGameSettings] = useState({
+        aiLevel: 1,
+        soundOn: true
+    });
+
 
     useEffect(() => {
         socket.connect();
@@ -54,7 +61,10 @@ const LivePage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black p-4 relative">
-            <Navbar/>
+        <Navbar 
+            onSettingsClick={() => setSettingsOpen(true)}
+        />
+
             {gameState === "playing" ? (
                 <>
                     <div className="text-red-500 text-4xl mb-4 font-['VT323']">
@@ -102,6 +112,16 @@ const LivePage = () => {
                     Leave
                 </button>
             </div>
+
+            <SettingsLive
+                isOpen={settingsOpen}
+                onClose={() => setSettingsOpen(false)}
+                initialSettings={gameSettings}
+                onSettingsChange={(newSettings) => {
+                    setGameSettings(newSettings);
+                    // Additional logic for applying settings (e.g., changing AI difficulty)
+                }}
+            />
         </div>
     );
 };
