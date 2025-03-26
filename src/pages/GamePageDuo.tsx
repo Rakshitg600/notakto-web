@@ -14,7 +14,7 @@ const GamePageDuo: React.FC = () => {
   const [sound, setSound] = useState(true);
 
   const handleGridCellClick = () => {
-    setCurrentTurn(currentTurn === player1Name ? player2Name : player1Name);
+    setCurrentTurn(currentTurn === 'Player 1' ? 'Player 2' : 'Player 1');
   };
 
   const handleNameSubmit = (e: React.FormEvent) => {
@@ -41,7 +41,7 @@ const GamePageDuo: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <Navbar 
-        onSettingsToggle={toggleSettings} 
+        onSettingsClick={toggleSettings} 
         onResetGame={handleResetGame} 
         soundEnabled={sound}
         onSoundToggle={toggleSound}
@@ -92,8 +92,9 @@ const GamePageDuo: React.FC = () => {
               isAlive && (
                 <GameGrid 
                   key={index} 
+                  gridIndex={index}
                   onCellClick={handleGridCellClick}
-                  playerName={currentTurn}
+                  disabled={false} 
                 />
               )
             ))}
@@ -104,7 +105,9 @@ const GamePageDuo: React.FC = () => {
       <AnimatePresence>
         {isSettingsOpen && (
           <SettingsModal 
+            isOpen={isSettingsOpen}
             onClose={toggleSettings}
+            onResetGame={handleResetGame}
             soundEnabled={sound}
             onSoundToggle={toggleSound}
           />
