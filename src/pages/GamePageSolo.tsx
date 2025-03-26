@@ -42,12 +42,12 @@ const GamePageSolo: React.FC<GamePageSoloProps> = () => {
     // Add reset game logic
   };
 
-  const toggleSound = () => {
-    setSoloSettings(prev => ({
-      ...prev,
-      soundOn: !prev.soundOn
-    }));
-  };
+  // const toggleSound = () => {
+  //   setSoloSettings(prev => ({
+  //     ...prev,
+  //     soundOn: !prev.soundOn
+  //   }));
+  // };
 
   const handleSoloSettingsChange = (newSettings: { aiLevel: number; soundOn: boolean }) => {
     setSoloSettings(newSettings);
