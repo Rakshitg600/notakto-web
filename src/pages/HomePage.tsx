@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import { Link } from "react-router-dom";
-// Sound imports would go here in a real implementation
-// import soloHoverSound from '../assets/sounds/solo-hover.wav';
-// import duoHoverSound from '../assets/sounds/duo-hover.wav';
-// import liveHoverSound from '../assets/sounds/live-hover.wav';
+import chiptune from "../assets/button-sound.mp3"
+
 
 const HomePage: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
@@ -22,7 +20,8 @@ const HomePage: React.FC = () => {
 
   // Function to play sound (in a real implementation)
   const playHoverSound = (gameMode: string) => {
-    // In a real implementation, this would play the corresponding sound
+    const audio = new Audio(chiptune);
+    audio.play();
     console.log(`Playing ${gameMode} hover sound`);
   };
 

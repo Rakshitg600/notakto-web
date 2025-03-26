@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import GameGrid from '../components/GameGrid';
 import SettingsModal from '../components/SettingsModal';
+import chiptune from '../assets/button-sound.mp3';
 
 const GamePage: React.FC = () => {
   const [playerName, setPlayerName] = useState('');
@@ -15,6 +16,7 @@ const GamePage: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [sound, setSound] = useState(true);
   const [soundEnabled] = useState(true);
+
 
   const handleGridCellClick = () => {
     // Basic turn switching and grid management logic
