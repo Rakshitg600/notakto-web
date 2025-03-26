@@ -4,17 +4,16 @@ import Navbar from '../components/Navbar';
 import GameGrid from '../components/GameGrid';
 import SettingsSolo from '../components/SettingsSolo';
 
-// Remove the unused interface or use it in the component props
-interface GamePageSoloProps {
-  // Add any props if needed, or remove if no props are required
-}
-
-const GamePageSolo: React.FC<GamePageSoloProps> = () => {
+const GamePageSolo: React.FC = () => {
   const [playerName, setPlayerName] = useState('');
   const [gameStarted, setGameStarted] = useState(false);
   const [currentTurn, setCurrentTurn] = useState('Player');
   const [gridsAlive] = useState([true, true, true]);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  // Add state for coins and XP
+  const [coins, setCoins] = useState(1000);
+  const [xp, setXp] = useState(0);
 
   // Solo settings state
   const [soloSettings, setSoloSettings] = useState({
@@ -24,6 +23,11 @@ const GamePageSolo: React.FC<GamePageSoloProps> = () => {
 
   const handleGridCellClick = () => {
     setCurrentTurn(currentTurn === 'Player' ? 'Computer' : 'Player');
+    
+    // Example of using setCoins and setXp
+    // You can replace these with actual game logic
+    setCoins(prevCoins => prevCoins + 10);
+    setXp(prevXp => prevXp + 5);
   };
 
   const handleNameSubmit = (e: React.FormEvent) => {
@@ -39,15 +43,10 @@ const GamePageSolo: React.FC<GamePageSoloProps> = () => {
 
   const handleResetGame = () => {
     setIsSettingsOpen(false);
-    // Add reset game logic
+    // Reset coins and XP
+    setCoins(1000);
+    setXp(0);
   };
-
-  // const toggleSound = () => {
-  //   setSoloSettings(prev => ({
-  //     ...prev,
-  //     soundOn: !prev.soundOn
-  //   }));
-  // };
 
   const handleSoloSettingsChange = (newSettings: { aiLevel: number; soundOn: boolean }) => {
     setSoloSettings(newSettings);
@@ -105,6 +104,26 @@ const GamePageSolo: React.FC<GamePageSoloProps> = () => {
       {gameStarted && (
         <>
           <Navbar onSettingsClick={toggleSettings} />
+
+          {/* Top bar with coins and XP */}
+          <div className="absolute top-0 left-0 right-0 flex justify-between p-4 text-xl">
+            <div className="flex items-center">
+              <img 
+                src="/coin-icon.png" 
+                alt="Coins" 
+                className="w-6 h-6 mr-2" 
+              />
+              <span>{coins}</span>
+            </div>
+            <div className="flex items-center">
+              <img 
+                src="/xp-icon.png" 
+                alt="XP" 
+                className="w-6 h-6 mr-2" 
+              />
+              <span>{xp} XP</span>
+            </div>
+          </div>
 
           <SettingsSolo
             isOpen={isSettingsOpen}
