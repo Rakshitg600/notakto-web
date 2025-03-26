@@ -24,7 +24,6 @@ const GamePageDuo: React.FC = () => {
     grid2: false,
     grid3: false
   });
-  const [totalBlockedGrids, setTotalBlockedGrids] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
   const [lastMoveBy, setLastMoveBy] = useState<string | null>(null);
 
@@ -74,15 +73,15 @@ const GamePageDuo: React.FC = () => {
     if (checkWinningPattern(currentGrid)) {
       const newBlockedGrids = {...blockedGrids, [gridKey]: true};
       setBlockedGrids(newBlockedGrids);
-      
-      const newTotalBlockedGrids = Object.values(newBlockedGrids).filter(Boolean).length;
-      setTotalBlockedGrids(newTotalBlockedGrids);
+
+      // Check total blocked grids
+      const blockedCount = Object.values(newBlockedGrids).filter(Boolean).length;
 
       // Update last move
       setLastMoveBy(isPlayerTurn ? 'player1' : 'player2');
 
       // Check if game is over (all grids blocked)
-      if (newTotalBlockedGrids === 3) {
+      if (blockedCount === 3) {
         handleGameOver();
         return;
       }
@@ -120,7 +119,6 @@ const GamePageDuo: React.FC = () => {
       grid2: false,
       grid3: false
     });
-    setTotalBlockedGrids(0);
     setIsGameOver(false);
     setLastMoveBy(null);
     setGridStates({
