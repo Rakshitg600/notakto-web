@@ -150,7 +150,7 @@ const GamePageDuo: React.FC = () => {
                 id="player1-name"
                 type="text"
                 className="bg-gray-700 text-white px-4 py-2 rounded"
-                placeholder="Player 1 Name"
+                placeholder="Player 1"
                 maxLength={15}
                 required
               />
@@ -158,7 +158,7 @@ const GamePageDuo: React.FC = () => {
                 id="player2-name"
                 type="text"
                 className="bg-gray-700 text-white px-4 py-2 rounded"
-                placeholder="Player 2 Name"
+                placeholder="Player 2"
                 maxLength={15}
                 required
               />

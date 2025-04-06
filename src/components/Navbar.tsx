@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import customLogo from '../assets/notakto.svg';
 import { signInWithGoogle, signOutUser } from '../constants/firebase';
+import { Link } from 'react-router-dom';
 
 interface NavbarProps {
   onSettingsClick: () => void;  // Updated to be a required prop
@@ -34,20 +35,21 @@ const Navbar: React.FC<NavbarProps> = ({ onSettingsClick }) => {
         transition={{ delay: 1.2, type: "spring", stiffness: 100 }}
       >
         {/* Left side - Logo */}
-        <motion.div 
-          className="text-4xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-red-500 flex items-center gap-3"
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-        >
-          {/* Game icon */}
-          <img 
-            src={customLogo} 
-            alt="Notakto Logo" 
-            className="w-10 h-10 md:w-12 md:h-12 filter drop-shadow-glow custom-logo-shadow" 
-          />
-          
-          NOTAKTO
-        </motion.div>
+        <Link to="/" className="no-underline">
+  <motion.div
+    className="text-4xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-red-500 flex items-center gap-3"
+    whileHover={{ scale: 1.05 }}
+    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+  >
+    {/* Game icon */}
+    <img
+      src={customLogo}
+      alt="Notakto Logo"
+      className="w-10 h-10 md:w-12 md:h-12 filter drop-shadow-glow custom-logo-shadow"
+    />
+    NOTAKTO
+  </motion.div>
+</Link>
 
         {/* Hamburger menu button - visible on mobile */}
         <motion.button
