@@ -5,27 +5,37 @@ import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
+  User,
 } from 'firebase/auth';
-import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+} from 'firebase/firestore';
 
-
+// Initialize Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyBmSkCnePbHTi2BcngOIVekwP7CxJJ0SzQ",
-  authDomain: "notakto-g600.firebaseapp.com",
-  projectId: "notakto-g600",
-  storageBucket: "notakto-g600.firebasestorage.app",
-  messagingSenderId: "200189691429",
-  appId: "1:200189691429:web:14bcecc90423f59e0ce1cc",
-  measurementId: "G-P2EXC36LGK",
-};
+    apiKey: "AIzaSyBmSkCnePbHTi2BcngOIVekwP7CxJJ0SzQ",
+    authDomain: "notakto-g600.firebaseapp.com",
+    projectId: "notakto-g600",
+    storageBucket: "notakto-g600.firebasestorage.app",
+    messagingSenderId: "200189691429",
+    appId: "1:200189691429:web:14bcecc90423f59e0ce1cc",
+    measurementId: "G-P2EXC36LGK"
+  };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
-const googleProvider = new GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
 
-export const signInWithGoogle = async () => {
+// -------------------
+// Google Sign-In
+// -------------------
+export const signInWithGoogle = async (): Promise<User> => {
   try {
-    const result = await signInWithPopup(auth, googleProvider);
+    const result = await signInWithPopup(auth, provider);
     return result.user;
   } catch (error) {
     console.error('Google Sign-In error:', error);
@@ -33,6 +43,9 @@ export const signInWithGoogle = async () => {
   }
 };
 
+// -------------------
+// Sign Out
+// -------------------
 export const signOutUser = async () => {
   try {
     await signOut(auth);
@@ -42,20 +55,39 @@ export const signOutUser = async () => {
   }
 };
 
-export const onAuthStateChangedListener = (callback: any) => {
+// -------------------
+// Auth State Listener
+// -------------------
+export const onAuthStateChangedListener = (callback: (user: User | null) => void): (() => void) => {
   return onAuthStateChanged(auth, callback);
 };
 
-export const saveEconomyToFirestore = async (userId: string, coins: any, experience: any) => {
+// -------------------
+// Save Economy Data
+// -------------------
+export const saveEconomyToFirestore = async (
+  userId: string,
+  coins: number,
+  XP: number
+) => {
   const userRef = doc(firestore, 'users', userId);
-  await setDoc(userRef, { coins, experience }, { merge: true });
+  await setDoc(userRef, { coins, XP }, { merge: true });
 };
 
-export const loadEconomyFromFirestore = async (userId: string) => {
+// -------------------
+// Load Economy Data
+// -------------------
+export const loadEconomyFromFirestore = async (
+  userId: string
+) => {
   const userRef = doc(firestore, 'users', userId);
   const docSnap = await getDoc(userRef);
-  return docSnap.exists() ? docSnap.data() : { coins: 1000, experience: 0 };
+  if (docSnap.exists()) {
+    return docSnap.data() || null;
+  }
+  return null;
 };
+
 export const calculateRewards = (
   isWin: boolean,
   difficulty: number,

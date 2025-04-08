@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import customLogo from '../assets/notakto.svg';
-import { signInWithGoogle, signOutUser } from '../constants/firebase';
 import { Link } from 'react-router-dom';
+import { signInWithGoogle, signOutUser, onAuthStateChangedListener, saveEconomyToFirestore, loadEconomyFromFirestore } from '../constants/firebase';
+import { useCoins, useXP } from '../constants/store';
 
 interface NavbarProps {
   onSettingsClick: () => void;  // Updated to be a required prop
@@ -12,6 +13,58 @@ const Navbar: React.FC<NavbarProps> = ({ onSettingsClick }) => {
   const [downloadsOpen, setDownloadsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [signed,setSigned]=useState<boolean>(false);
+  const { coins, setCoins } = useCoins();
+  const { XP, setXP } = useXP();
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  // Auth user
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener(async (usr) => {
+      setUser(usr);
+      if (usr) {
+        const cloudData = await loadEconomyFromFirestore(usr.uid) as { coins?: number; XP?: number };
+        if (cloudData) {
+          setCoins(cloudData.coins ?? 1000);
+          setXP(cloudData.XP ?? 0);
+        } else {
+          setCoins(1000);
+          setXP(0);
+        }
+        setDataLoaded(true); // Mark data as loaded
+      } else {
+        setCoins(1000);
+        setXP(0);
+        setDataLoaded(false); // Reset when user signs out
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+  
+  // Save economy data only if data is loaded and user is signed in
+  useEffect(() => {
+    if (user && dataLoaded) {
+      saveEconomyToFirestore(user.uid, coins, XP);
+    }
+  }, [coins, XP, user, dataLoaded]);
+  const handleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      // Data loading handled by auth state listener
+    } catch (error) {
+      console.error('Sign in error:', error);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOutUser();
+      setCoins(1000);
+      setXP(0);
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
 
   // Close mobile menu on window resize
   useEffect(() => {
@@ -184,7 +237,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSettingsClick }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.5 }}
               onClick={() => {
-                signOutUser();
+                handleSignOut();
                 setSigned(false);
               }}
             >
@@ -205,7 +258,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSettingsClick }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.5 }}
               onClick={() => {
-                signInWithGoogle();
+                handleSignIn();
                 setSigned(true);
               }}
             >
