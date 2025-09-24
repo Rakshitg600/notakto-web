@@ -15,7 +15,7 @@
     "@fontsource/vt323": "^5.2.5",
     "@tailwindcss/vite": "^4.0.15",
     "dotenv": "^16.4.7",
-    "firebase": "^11.5.0",
+    "firebase": "^11.10.0",
     "framer-motion": "^12.5.0",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
